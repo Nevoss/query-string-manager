@@ -1,0 +1,22 @@
+{
+  "name": "query-string-manager",
+  "version": "0.0.1",
+  "description": "manage your query string in an elegant way",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "query-string",
+    "query",
+    "querystring",
+    "querystringmanager",
+    "query-string-manager",
+    "querystring-manager"
+  ],
+  "author": "Nevo Golan <nevos12@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "loadash": "^1.0.0"
+  }
+}
