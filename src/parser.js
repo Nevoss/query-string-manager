@@ -1,24 +1,30 @@
-import _ from 'lodash'
+const _ = require('lodash')
 
-export default {
+module.exports = {
 
-  default: {},
+  /**
+   * THe final object that will rbe returned
+   * 
+   * @var {object}
+   */
+  parsedObj: {},
 
-  finalObj: {},
-
-  parse(str = null) {
+  /**
+   * the main parse method
+   * 
+   * @param {string} str 
+   */
+  parse(str) {
 
     if (!this.validateString(str)) {
-      return this.default
+      return {}
     }
 
     str = this.clearString(str)
 
     if (!str) {
-      return this.default
+      return {}
     }
-
-    var obj = {}
 
     _.forEach(str.split('&'), (part) => {
       let pair = part.replace(/\+/g, ' ').split('=');
@@ -30,26 +36,19 @@ export default {
 
       for (let i = 0; i < key.length; i++) {
 
-        if (_.isEmpty(key[i])) {
-          let index = _.isArray(_.get(obj, pathString)) ? _.get(obj, pathString).length : 0
+        pathString = this.buildObj(key[i], pathString, value)
 
-          _.set(obj, `${pathString}[${index}]`, value)
-          continue;
-        }
-
-        let pathString = _.isEmpty(pathString) ? key[i] : `${pathString}.${key[i]}`
-
-        if (_.has(obj, pathString) && !isFinite(key[i])) {
-          continue;
-        }
-
-        _.set(obj, pathString, value)
       }
     })
 
-    return obj
+    return this.parsedObj
   },
 
+  /**
+   * check if string is valid
+   * 
+   * @param {string} str 
+   */
   validateString(str) {
     if (typeof str !== 'string') {
       return false
@@ -58,12 +57,51 @@ export default {
     return true
   },
 
+  /**
+   * claer the string
+   * 
+   * @param {string} str 
+   */
   clearString(str) {
-    return decodeURIComponent(str.trim().replace(/^[?#&]/, ''));
+    return decodeURIComponent(str.trim().replace(/^[?#&]/, '').replace(/[?#&]$/, ''));
   },
 
+  /**
+   * split the string to an array base on php parser style
+   * 
+   * @param {string} key 
+   */
   splitKeyIfNeeded(key) {
     return key.replace(/\]/g, '').split('[')
+  },
+
+  /**
+   * build a specific key on the final object
+   * 
+   * @param {string} currentKey 
+   * @param {string} pathString 
+   * @param {string} value 
+   */
+  buildObj(currentKey, pathString, value) {
+
+    if (_.isEmpty(currentKey)) {
+
+      let index = _.isArray(_.get(this.parsedObj, pathString)) ? _.get(this.parsedObj, pathString).length : 0
+
+      _.set(this.parsedObj, `${pathString}[${index}]`, value)
+
+      return pathString
+    }
+
+    pathString = _.isEmpty(pathString) ? currentKey : `${pathString}.${currentKey}`
+
+    if (_.has(this.parsedObj, pathString) && !isFinite(currentKey)) {
+      return pathString
+    }
+
+    _.set(this.parsedObj, pathString, value)
+
+    return pathString
   }
 
 }
