@@ -1,6 +1,3 @@
-// import parser from './parser'
-// import stringifyer from './stringifyer'
-
 const parser = require('./parser')
 
 module.exports = {
