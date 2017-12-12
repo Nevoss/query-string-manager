@@ -136,4 +136,30 @@ module.exports = {
 
     return this
   },
+
+  /**
+   * reset queryStringObject and push to the url if wanted
+   * 
+   * @param {boolean} push 
+   */
+  reset(push = false) {
+    this.queryStringObject = {}
+
+    if (push) {
+      this.pushToUrl()
+    }
+
+    return this
+  },
+
+  /**
+   * remove a specific key in queryStringObject
+   * 
+   * @param {mixed} key 
+   */
+  remove(key) {
+    _.unset(this.queryStringObject, key)
+
+    return this
+  },
 }
