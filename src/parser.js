@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 module.exports = {
 
@@ -51,6 +51,7 @@ module.exports = {
    */
   validateString(str) {
     if (typeof str !== 'string') {
+      throw 'you can parse only string!'
       return false
     }
 

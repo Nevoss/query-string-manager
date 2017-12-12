@@ -1,41 +1,64 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 module.exports =  {
 
+  /**
+   * the finale strigify result
+   * 
+   * @var string
+   */
+  stringResult: '',
+
+  /**
+   * main strigify method
+   * 
+   * @param {object} obj 
+   */
   stringify(obj) {
     
-    if (this.validate(obj)) {
+    if (!this.validate(obj)) {
       return ''
     }
 
-    this.recursiveRun(obj)
-
+    return this.recursiveRun(obj).slice(0, -1)
   },
 
-  recursiveRun(obj) {
+  /**
+   * run over the obeject or the array and create the string version
+   * 
+   * @param {object|array} obj 
+   * @param {string} preFix 
+   */
+  recursiveRun(obj, preFix = '%replaceme%') {
     let keys = Object.keys(obj)
 
-    let string = ''
-
-    for (let i; i < keys.lenght; i++) {
-      string += keys[i] + '='
+    for (let i = 0; i < keys.length; i++) {
 
       let value;
 
-      if (typeof obj[key[i]] === 'array' || typeof obj[key[i]] === 'object') {
-        value = this.recursiveRun(obj[key[i]])  
-      } else {
-        value = obj[key[i]]
+      let prefixStr = preFix.replace('%replaceme%', keys[i]);
+
+      if (typeof obj[keys[i]] === 'array' || typeof obj[keys[i]] === 'object') {
+        value = this.recursiveRun(obj[keys[i]], prefixStr  + '[%replaceme%]')  
+
+        continue
       }
 
-      string += value + '&'
-
-      return string
+      value = obj[keys[i]]
+      this.stringResult += prefixStr + '=' + value+ '&' 
     }
+
+    return this.stringResult
   },
 
+  /**
+   * validate for object
+   * 
+   * @param {object} obj 
+   */
   validate(obj) {
     if (typeof obj !== 'object') {
+      throw 'You can only strigify an object'
       return false
     }
 

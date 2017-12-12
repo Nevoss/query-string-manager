@@ -2,10 +2,11 @@
   "name": "query-string-manager",
   "version": "0.0.1",
   "description": "manage your query string in an elegant way",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "npm run build",
+    "try-example": "npm run build & node ./example.js"
   },
   "keywords": [
     "query-string",

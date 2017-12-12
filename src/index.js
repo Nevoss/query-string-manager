@@ -1,4 +1,6 @@
-const parser = require('./parser')
+import parser from './parser'
+import stringifyer from './stringifyer' 
+import _ from 'lodash'
 
 module.exports = {
   
@@ -41,6 +43,19 @@ module.exports = {
   },
 
   /**
+   * stringfy 
+   * 
+   * @param {mixed} queryStringObj 
+   */
+  stringify(queryStringObj = null) {
+    if (!queryStringObj) {
+      queryStringObj = this.queryStringObject
+    }
+
+    return stringifyer.stringify(queryStringObj)
+  },
+
+  /**
    * Call all the listeners that provided
    */
   callListeners() {
@@ -51,10 +66,17 @@ module.exports = {
     }
   },
 
+  /**
+   * get all or specific key
+   * 
+   * @param {mixed} key 
+   */
   get(key = null) {
     if (!key) {
       return this.queryStringObject
     }
+
+
   }
   
 }

@@ -1,5 +1,5 @@
-const queryStringManager = require('./src')
+const queryStringManager = require('./dist')
 
-let result = queryStringManager.read('?by=name&form[name]=somthing&form[email]=nevos12@gmail.com&form[keys][]=1&form[keys][]=2&form[keys][]=3')
+let result = queryStringManager.read('?by[a][a]=1&by[a][b]=2&with=2')
 
-console.log(result.get());
+console.log(result.stringify());
