@@ -56,6 +56,17 @@ module.exports = {
   },
 
   /**
+   * add funcions to listeners
+   * 
+   * @param {function} callback 
+   */
+  listen(callback) {
+    this.listeners.push(callback)
+
+    return this
+  },
+
+  /**
    * Call all the listeners that provided
    */
   callListeners() {
@@ -64,19 +75,65 @@ module.exports = {
         this.listeners[i](this)
       }
     }
+
+    return this
   },
 
   /**
-   * get all or specific key
+   * set method ob queryStringObject
    * 
    * @param {mixed} key 
+   * @param {mixed} val 
    */
-  get(key = null) {
+  set(key, val = null) {
+    if (typeof key === 'object') {
+      this.queryStringObject = Object.assign({}, key, this.queryStringObject)
+
+      return this
+    }
+
+    _.set(this.queryStringObject, key, val)
+
+    return this
+  },
+
+  /**
+   * get all or specific key on queryStringObject
+   * 
+   * @param {mixed} key 
+   * @param {mixed} default 
+   */
+  get(key = null, defaultVal = null) {
     if (!key) {
       return this.queryStringObject
     }
-
-
-  }
+    
+    return _.get(this.queryStringObject, key, defaultVal)
+  },
   
+  /**
+   * set the current state of queryStringObject in the url 
+   * with out refresh!
+   * 
+   */
+  pushToUrl() {
+    history.pushState(null, null, '?' + this.stringify())
+
+    this.callListeners()
+
+    return this
+  },
+
+  /**
+   * set and item or object and push to url
+   * 
+   * @param {mixed} key 
+   * @param {mixed} val 
+   */
+  push(key, val = null) {
+    this.set(key, val)
+    this.pushToUrl()
+
+    return this
+  },
 }

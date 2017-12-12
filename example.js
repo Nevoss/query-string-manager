@@ -1,5 +1,7 @@
 const queryStringManager = require('./dist')
 
-let result = queryStringManager.read('?by[a][a]=1&by[a][b]=2&with=2')
+let qsManager = queryStringManager.read('?by[a][a]=1&by[a][b]=2&with=2')
 
-console.log(result.stringify());
+qsManager.set('by', 20)
+
+console.log(qsManager.get());
