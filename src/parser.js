@@ -16,6 +16,8 @@ module.exports = {
    */
   parse(str) {
 
+    this.parsedObj = {}
+
     if (!this.validateString(str)) {
       return {}
     }

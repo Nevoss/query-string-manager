@@ -117,7 +117,9 @@ module.exports = {
    * 
    */
   pushToUrl() {
-    history.pushState(null, null, '?' + this.stringify())
+    if (typeof history !== 'undefined') {
+      history.pushState(null, null, '?' + this.stringify())
+    }
 
     this.callListeners()
 

@@ -16,6 +16,8 @@ module.exports =  {
    */
   stringify(obj) {
     
+    this.stringResult = ''
+
     if (!this.validate(obj)) {
       return ''
     }
