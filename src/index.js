@@ -21,12 +21,20 @@ module.exports = {
   /**
    * read the query string and pass is to the main object
    * 
-   * @param {string} queryString 
+   * @param {string|null} queryString 
    * @param {boolean} callListeners 
    */
-  read(queryString = window.location.search, callListeners = true) {
+  read(queryString = null, callListeners = true) {
 
-    this.parse(queryString).callListeners()
+    if (queryString === null) {
+      queryString = window.location.search
+    }
+
+    this.queryStringObject = this.parse(queryString)
+
+    if (callListeners) {
+      this.callListeners()
+    }
 
     return this
   },
@@ -37,15 +45,13 @@ module.exports = {
    * @param {string} queryString 
    */
   parse(queryString) {
-    this.queryStringObject = parser.parse(queryString)
-
-    return this
+    return parser.parse(queryString)
   },
 
   /**
    * stringfy 
    * 
-   * @param {mixed} queryStringObj 
+   * @param {object|null} queryStringObj 
    */
   stringify(queryStringObj = null) {
     if (!queryStringObj) {
@@ -82,7 +88,7 @@ module.exports = {
   /**
    * set method ob queryStringObject
    * 
-   * @param {mixed} key 
+   * @param {string|object} key 
    * @param {mixed} val 
    */
   set(key, val = null) {
@@ -100,8 +106,8 @@ module.exports = {
   /**
    * get all or specific key on queryStringObject
    * 
-   * @param {mixed} key 
-   * @param {mixed} default 
+   * @param {string|null} key 
+   * @param {mixed} defaultVal
    */
   get(key = null, defaultVal = null) {
     if (!key) {
@@ -144,7 +150,7 @@ module.exports = {
    * 
    * @param {boolean} push 
    */
-  reset(push = false) {
+  reset(push = true) {
     this.queryStringObject = {}
 
     if (push) {
@@ -159,8 +165,12 @@ module.exports = {
    * 
    * @param {mixed} key 
    */
-  remove(key) {
+  remove(key, push = true) {
     _.unset(this.queryStringObject, key)
+
+    if (push) {
+      this.pushToUrl()
+    }
 
     return this
   },
