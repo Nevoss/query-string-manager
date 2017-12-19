@@ -39,7 +39,8 @@ queryStringManager.get()
 ```
 
 ## API
-### .read([string|null], [callListeners = true])
+**.read([string|null], [callListeners = true])**    
+
 if the first argument is null the method will take `location.search` as first argument. the second argument is a boolean that by default call all the listeners that provide.
 The method returns `this`
 
@@ -51,7 +52,8 @@ queryStringManager.read(null, false)
 // will read from location.search with out call all of the listeners
 ```
 
-### .get([key = null], [defaultVal = null])
+**.get([key = null], [defaultVal = null])**
+
 when not providing and arguments its just return all the query-string parsed object
 ```js
 // ?foo=bar&form[a]=fifi
@@ -70,7 +72,8 @@ queryStringManager.get('form.b', 'default')
 //=> 'default'
 ```
 
-### .set( string|object, [val = null] )
+**.set( string|object, [val = null] )**
+
 when the first argument is an regular string its act just like the [lodash set method](https://lodash.com/docs/4.17.4#set)
 ```js
 queryStringManager.set('form.a', 'someValue').get()
@@ -89,7 +92,8 @@ queryStringManager.set({
 //=> {a: 'a', b: { foo: 'bar' }, foo: 'bar'}
 ```
 
-### .pushToUrl()
+**.pushToUrl()**
+
 just like it`s sound replace the current query-string with the queryStringManager state. and call all the listeners
 ```js
 // url query-string = ?a=b
@@ -100,10 +104,12 @@ queryStringManager.set({foo: 'bar'}).pushToUrl()
 // url query-string = ?a=b&foo=bar
 ```
 
-### .push( string|object, [val = null] )
+**.push( string|object, [val = null] )**
+
 act just like `.set()` but also call `pushToUrl()` after the value was seted
 
-### .listen( callback )
+**.listen( callback )**
+
 add an callback function to the listeners array. when `pushToUrl()`, `push()` or `read()` are called. all the listeners that provied will be call.
 ```js
 queryStringManager.listen(() => {
@@ -119,18 +125,22 @@ queryStringManager.push('a', 'foo')
 //=> 'a value is foo'
 ```
 
-### .parse( string )
+**.parse( string )**
+
 just like it sound - parse the query-string and returns an object
 
-### .stringify( [queryStringObj] )
+**.stringify( [queryStringObj] )**
+
 if nothing or `null` is passed to the argument this will stringifiy the current state of the object.
 
 if passed an object it will return the query-string of the object that was passed
 
-### reset( [push = true] )
+**reset( [push = true] )**
+
 clear all the state object. and has the option to `pushToUrl()`
 
-### remove( string, [ push = true ] )
+**remove( string, [ push = true ] )**
+
 work just like [lodash unset method](https://lodash.com/docs/4.17.4#unset) works.
 and has the option to `pushToUrl()`
 

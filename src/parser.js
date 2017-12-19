@@ -53,7 +53,7 @@ module.exports = {
    */
   validateString(str) {
     if (typeof str !== 'string') {
-      throw 'you can parse only string!'
+      throw new Error('you can parse only string!')
       return false
     }
 
@@ -66,7 +66,7 @@ module.exports = {
    * @param {string} str 
    */
   clearString(str) {
-    return decodeURIComponent(str.trim().replace(/^[?#&]/, '').replace(/[?#&]$/, ''));
+    return decodeURIComponent(str.trim().replace(/^[?#&]/, '').replace(/[#&]+$/, ''));
   },
 
   /**
@@ -102,9 +102,28 @@ module.exports = {
       return pathString
     }
 
+    value = this.transformFinalValue(value)
+
     _.set(this.parsedObj, pathString, value)
 
     return pathString
+  },
+
+  /**
+   * transform some types of data to another type of data if needed
+   * 
+   * @param {string} value 
+   */
+  transformFinalValue(value) {
+    if (typeof value === 'undefined') {
+      return null
+    }
+
+    if (/^\d+$/.test(value)) {
+      return parseInt(value)
+    }
+
+    return value
   }
 
 }

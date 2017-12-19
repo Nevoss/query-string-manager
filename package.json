@@ -1,6 +1,6 @@
 {
   "name": "query-string-manager",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "manage your query string in an elegant way",
   "main": "dist/index.js",
   "repository": {
@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/nevos12/query-string-manager",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register test/*.spec.js",
+    "test": "mocha --require babel-core/register test/*.spec.js",
     "build": "babel src --out-dir dist",
     "prepublish": "npm run build"
   },
