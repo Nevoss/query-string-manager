@@ -13,7 +13,7 @@
   "homepage": "https://github.com/nevos12/query-string-manager",
   "scripts": {
     "test": "mocha --require babel-core/register test/*.spec.js",
-    "build": "babel src --out-dir dist",
+    "build": "npm run test && babel src --out-dir dist",
     "prepublish": "npm run build"
   },
   "keywords": [
