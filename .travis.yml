@@ -1,6 +1,7 @@
 languge: node_js
 node_js: 
   - "stable"
-script:
+before_script:
   - npm install
-  - npm run build
+script:
+  - npm run test

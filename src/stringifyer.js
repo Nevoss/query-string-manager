@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 module.exports =  {
 
   /**
@@ -40,14 +38,13 @@ module.exports =  {
 
       let prefixStr = preFix.replace('%replaceme%', keys[i]);
 
-      if (typeof obj[keys[i]] === 'array' || typeof obj[keys[i]] === 'object') {
+      if (typeof obj[keys[i]] === 'array' || (typeof obj[keys[i]] === 'object' && obj[keys[i]] !== null)) {
         value = this.recursiveRun(obj[keys[i]], prefixStr  + '[%replaceme%]')  
 
         continue
       }
 
-      value = obj[keys[i]]
-      this.stringResult += prefixStr + '=' + value+ '&' 
+      this.stringResult += prefixStr + this.transfomFinalvalue(obj[keys[i]]) + '&' 
     }
 
     return this.stringResult
@@ -60,11 +57,24 @@ module.exports =  {
    */
   validate(obj) {
     if (typeof obj !== 'object') {
-      throw 'You can only strigify an object'
+      throw new Error('You can only strigify an object')
       return false
     }
 
     return true
+  },
+
+  /**
+   * transform final value
+   * 
+   * @param {mixed} value 
+   */
+  transfomFinalvalue(value) {
+    if (value === null) {
+      return ''
+    }
+
+    return '=' + value
   }
 
 }

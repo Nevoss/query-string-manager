@@ -31,7 +31,7 @@ describe('parser', () => {
     })
   })
 
-  it('parse a value of only digit to number', () => {
+  it('parse a value of only digits to number', () => {
     let queryString = '?a=1&b=22&c=2c'
     expect(parser.parse(queryString)).toEqual({
       a: 1,
@@ -48,7 +48,7 @@ describe('parser', () => {
     })
   })
 
-  it('parse an array like query string correctly', () => {
+  it('parse an array query string correctly', () => {
     let queryString = '?a[]=one&a[]=two&a[]=three&b[0]=one&b[1]=two'
     expect(parser.parse(queryString)).toEqual({
       a: ['one', 'two', 'three'],

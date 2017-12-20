@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { isEmpty, forEach, isArray, has, set, get  } from 'lodash'
 
 module.exports = {
 
@@ -28,7 +28,7 @@ module.exports = {
       return {}
     }
 
-    _.forEach(str.split('&'), (part) => {
+    forEach(str.split('&'), (part) => {
       let pair = part.replace(/\+/g, ' ').split('=');
       let value = pair[1]
 
@@ -87,24 +87,24 @@ module.exports = {
    */
   buildObj(currentKey, pathString, value) {
 
-    if (_.isEmpty(currentKey)) {
+    if (isEmpty(currentKey)) {
 
-      let index = _.isArray(_.get(this.parsedObj, pathString)) ? _.get(this.parsedObj, pathString).length : 0
+      let index = isArray(get(this.parsedObj, pathString)) ? get(this.parsedObj, pathString).length : 0
 
-      _.set(this.parsedObj, `${pathString}[${index}]`, value)
+      set(this.parsedObj, `${pathString}[${index}]`, value)
 
       return pathString
     }
 
-    pathString = _.isEmpty(pathString) ? currentKey : `${pathString}.${currentKey}`
+    pathString = isEmpty(pathString) ? currentKey : `${pathString}.${currentKey}`
 
-    if (_.has(this.parsedObj, pathString) && !isFinite(currentKey)) {
+    if (has(this.parsedObj, pathString) && !isFinite(currentKey)) {
       return pathString
     }
 
     value = this.transformFinalValue(value)
 
-    _.set(this.parsedObj, pathString, value)
+    set(this.parsedObj, pathString, value)
 
     return pathString
   },
