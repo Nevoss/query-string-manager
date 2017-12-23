@@ -93,7 +93,7 @@ module.exports = {
    */
   set(key, val = null) {
     if (typeof key === 'object') {
-      this.queryStringObject = Object.assign({}, key, this.queryStringObject)
+      this.queryStringObject = _.merge(this.queryStringObject, key)
 
       return this
     }
