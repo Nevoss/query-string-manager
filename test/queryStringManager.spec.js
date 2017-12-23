@@ -7,7 +7,7 @@ import parser from '../src/parser'
 import stringifyer from '../src/stringifyer'
 
 
-describe.only('queryStringManager', () => {
+describe('queryStringManager', () => {
 
 
   beforeEach(() => {
@@ -158,22 +158,136 @@ describe.only('queryStringManager', () => {
     getSpy.restore()
   })
 
-  // it('set a key and push to url at the same method', () => {
 
-  // })
+  it('push the query string object to the url', () => {
 
-  // it('can reset the queryStringObject and push to url if wanted', () => {
+    queryStringManager.queryStringObject = {
+      a: 1
+    }
 
-  // })
+    global.window = {
+      history: {
+        pushState(first, second, third) {
+          return true
+        }
+      }
+    }
 
-  // it('remove specific from queryStringObject and push to url if wanted', () => {
+    let callListenersSpy = sinon.spy(queryStringManager, 'callListeners')
+    let pushStateSpy = sinon.spy(global.window.history, 'pushState')
 
-  // })
+    queryStringManager.pushToUrl()
 
-  // it('can read query string parse it and call listeners if wanted', () => {
+    expect(global.window.history.pushState.calledOnce).to.be.true
+    expect(global.window.history.pushState.calledWith(null, null, '?a=1')).to.be.true
+    expect(queryStringManager.callListeners.calledOnce).to.be.true
 
-  // })
+    callListenersSpy.restore()
+    pushStateSpy.restore()
+  })
 
-  // Need to test push to url
 
+  it('set a key and push to url at the same method', () => {
+
+    let pushToUrlStub = sinon.stub(queryStringManager, 'pushToUrl')
+    let setSpy = sinon.spy(queryStringManager, 'set')
+
+    queryStringManager.push('a.a', 'b')
+
+    expect(queryStringManager.pushToUrl.calledOnce).to.be.true
+    expect(queryStringManager.set.calledOnce).to.be.true
+    expect(queryStringManager.set.calledWith('a.a', 'b')).to.be.true
+
+    pushToUrlStub.restore()
+    setSpy.restore()
+  })
+
+
+  it('can reset the queryStringObject and push to url if wanted', () => {
+    
+    let pushToUrlStub = sinon.stub(queryStringManager, 'pushToUrl')
+    
+    queryStringManager.queryStringObject = {
+      a: 'a',
+      b: {
+        c: 'c'
+      }
+    }
+
+    queryStringManager.reset(false)
+
+    expect(queryStringManager.queryStringObject).to.deep.equal({})
+    expect(queryStringManager.pushToUrl.notCalled).to.be.true
+
+    queryStringManager.reset()
+
+    expect(queryStringManager.pushToUrl.calledOnce).to.be.true
+
+    pushToUrlStub.restore()
+  })
+
+
+  it('remove specific from queryStringObject and push to url if wanted', () => {
+
+    let pushToUrlStub = sinon.stub(queryStringManager, 'pushToUrl')
+
+    queryStringManager.queryStringObject = {
+      a: 'a',
+      b: {
+        c: 'c'
+      }
+    }
+
+    queryStringManager.remove('b.c', false)
+
+    expect(queryStringManager.queryStringObject).to.deep.equal({ a: 'a', b: {} })
+    expect(queryStringManager.pushToUrl.notCalled).to.be.true
+
+    queryStringManager.remove('b')
+
+    expect(queryStringManager.queryStringObject).to.deep.equal({ a: 'a' })
+    expect(queryStringManager.pushToUrl.calledOnce).to.be.true
+
+    pushToUrlStub.restore()
+  })
+
+
+  it('can read query string, parse it and call listeners if wanted', () => {
+    let callListenersSpy = sinon.spy(queryStringManager, 'callListeners')
+    let parseSpy = sinon.spy(queryStringManager, 'parse')
+
+    queryStringManager.read('?a=1&b=2', false)
+
+    expect(queryStringManager.parse.calledOnce).to.be.true
+    expect(queryStringManager.parse.calledWith('?a=1&b=2')).to.be.true
+    expect(queryStringManager.parse.returned(queryStringManager.queryStringObject)).to.be.true
+    expect(queryStringManager.callListeners.notCalled).to.be.true
+
+    queryStringManager.read('?a=1&b=2', true)
+
+    expect(queryStringManager.parse.callCount).to.equal(2)
+    expect(queryStringManager.callListeners.calledOnce).to.be.true
+
+    callListenersSpy.restore()
+    parseSpy.restore()
+  })
+
+
+  it('can read the query string from the window object', () => {
+    let parseSpy = sinon.spy(queryStringManager, 'parse')
+
+    global.window = {
+      location: {
+        search: '?a=b&b=c'
+      }
+    }
+
+    queryStringManager.read()
+
+    expect(queryStringManager.parse.calledOnce).to.be.true
+    expect(queryStringManager.parse.calledWith('?a=b&b=c')).to.be.true
+    expect(queryStringManager.parse.returned(queryStringManager.queryStringObject)).to.be.true
+
+    parseSpy.restore()
+  })
 })

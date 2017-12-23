@@ -1,6 +1,6 @@
 import parser from './parser'
 import stringifyer from './stringifyer' 
-import _ from 'lodash'
+import { merge, set, get, unset } from 'lodash'
 
 module.exports = {
   
@@ -93,12 +93,12 @@ module.exports = {
    */
   set(key, val = null) {
     if (typeof key === 'object') {
-      this.queryStringObject = _.merge(this.queryStringObject, key)
+      this.queryStringObject = merge(this.queryStringObject, key)
 
       return this
     }
 
-    _.set(this.queryStringObject, key, val)
+    set(this.queryStringObject, key, val)
 
     return this
   },
@@ -114,7 +114,7 @@ module.exports = {
       return this.queryStringObject
     }
     
-    return _.get(this.queryStringObject, key, defaultVal)
+    return get(this.queryStringObject, key, defaultVal)
   },
   
   /**
@@ -123,9 +123,7 @@ module.exports = {
    * 
    */
   pushToUrl() {
-    if (typeof history !== 'undefined') {
-      history.pushState(null, null, '?' + this.stringify())
-    }
+    window.history.pushState(null, null, '?' + this.stringify())
 
     this.callListeners()
 
@@ -166,7 +164,7 @@ module.exports = {
    * @param {mixed} key 
    */
   remove(key, push = true) {
-    _.unset(this.queryStringObject, key)
+    unset(this.queryStringObject, key)
 
     if (push) {
       this.pushToUrl()

@@ -1,20 +1,20 @@
 import stringifyer from '../src/stringifyer'
-import expect from 'expect'
+import { expect } from 'chai'
 
 describe('stringifyer', () => {
   
   it('throw an error if the main argument is not an object', () => {
     expect(() => {
       stringifyer.stringify('string')
-    }).toThrow()
+    }).to.throw()
 
     expect(() => {
       stringifyer.stringify(1)
-    }).toThrow()
+    }).to.throw()
 
     expect(() => {
       stringifyer.stringify(true)
-    }).toThrow()
+    }).to.throw()
   })
 
   it ('stringify basic query string objects', () => {
@@ -24,7 +24,7 @@ describe('stringifyer', () => {
       c: 3
     }
     
-    expect(stringifyer.stringify(queryStringObj)).toEqual(
+    expect(stringifyer.stringify(queryStringObj)).to.equals(
       'a=a&b=b&c=3'
     )
   })
@@ -36,7 +36,7 @@ describe('stringifyer', () => {
       c: 2,
     }
     
-    expect(stringifyer.stringify(queryStringObj)).toEqual(
+    expect(stringifyer.stringify(queryStringObj)).to.equals(
       'a&b=&c=2'
     )
   })
@@ -46,7 +46,7 @@ describe('stringifyer', () => {
       a: [ 'a', 'b', 'c' ]
     }
 
-    expect(stringifyer.stringify(queryStringObj)).toEqual('a[0]=a&a[1]=b&a[2]=c')
+    expect(stringifyer.stringify(queryStringObj)).to.equals('a[0]=a&a[1]=b&a[2]=c')
   })
 
   it('stringify a complex object correctly', () => {
@@ -68,7 +68,7 @@ describe('stringifyer', () => {
       d: 2
     }
 
-    expect(stringifyer.stringify(queryStringObj)).toEqual(
+    expect(stringifyer.stringify(queryStringObj)).to.equals(
       'a[a]=one&a[b]=two&a[c]=three&b[3]=three&b[aa][aaa]=one&b[aa][bbb]=two&b[bb][0]=two&b[bb][1]=three&c=1&d=2'
     )
   })
