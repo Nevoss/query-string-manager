@@ -1,6 +1,6 @@
 {
   "name": "query-string-manager",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "manage your query string in an elegant way",
   "main": "dist/index.js",
   "repository": {
@@ -26,7 +26,7 @@
     "query string"
   ],
   "author": "Nevo Golan <nevos12@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.4"
   },
