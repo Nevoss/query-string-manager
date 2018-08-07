@@ -1,6 +1,6 @@
 # query-string-manager
 [![npm version](https://badge.fury.io/js/query-string-manager.svg)](https://badge.fury.io/js/query-string-manager)
-[![Build Status](https://travis-ci.org/nevos12/query-string-manager.svg?branch=master)](https://travis-ci.org/nevos12/query-string-manager)
+[![Build Status](https://travis-ci.org/Nevoss/query-string-manager.svg?branch=master](https://travis-ci.org/Nevoss/query-string-manager)
 > manage the state of URL [query string](https://en.wikipedia.org/wiki/Query_string) in an elegant way
 
 This package was writen becuase I did`t find a package, that was parsed a query-string like I want it to be parsed (complex objects and array), and in the same time to manage the current state of the query-string, and have the option to listen to any changes that happend in query-string from another places in my code.
