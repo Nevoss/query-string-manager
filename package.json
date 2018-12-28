@@ -1,6 +1,6 @@
 {
   "name": "query-string-manager",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "manage your query string in an elegant way",
   "main": "dist/index.js",
   "repository": {
